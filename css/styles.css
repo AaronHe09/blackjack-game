@@ -1,10 +1,43 @@
+* {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  color: white;
+}
+
 .container {
   background-image: url("https://images.creativemarket.com/0.1.0/ps/15464480/6000/4000/m1/fpnw/wm1/sstk_778501606_9890444.jpg-.jpg?1&s=cc722df190fee2f8634d7e7efe0d5b03");
   background-size: cover;
 }
 
-h1 {
+/* starting screen styling */
+
+header h1 {
   text-align: center;
-  color: white;
-  font-size: 3rem;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+/* starting screen images */
+
+img {
+  width: 100%;
+}
+
+.chip-image-wrapper {
+  width: 100%;
+  max-width: 100px;
+}
+
+.column-half {
+  margin: 0 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* starting screen money */
+
+p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
 }
