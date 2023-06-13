@@ -60,6 +60,7 @@ img {
   display: flex;
   justify-content: flex-end;
   padding-right: 2rem;
+  margin-bottom: 4rem;
 }
 
 .game-money,

@@ -8,9 +8,31 @@ const $header = document.querySelector('header');
 const $gameContainer = document.querySelector('.game-container');
 const $gameMoney = document.querySelector('.game-money');
 const $gameBet = document.querySelector('.game-bet');
+// api variable
+const deck = new XMLHttpRequest();
+const cards = new XMLHttpRequest();
+let deckId = null;
 // money variables
 let money = 1000;
 let bet = 0;
+
+// fetching deck api
+deck.open('GET', 'https://deckofcardsapi.com/api/deck/new/');
+deck.responseType = 'json';
+deck.addEventListener('load', function () {
+  deckId = deck.response.deck_id;
+});
+deck.send();
+
+// drawing from deck
+function drawCards(i) {
+  cards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${i}`);
+  cards.responseType = 'json';
+  cards.addEventListener('load', function () {
+    console.log(cards.response);
+  });
+  cards.send();
+}
 
 // eventLisenter for chip images
 $chipImageWrapper.forEach(function (chip) {
