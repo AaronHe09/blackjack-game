@@ -4,7 +4,10 @@ const $bet = document.querySelector('.bet');
 const $dealButton = document.querySelector('.deal-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
-
+// game elements
+const $gameContainer = document.querySelector('.game-container');
+const $gameMoney = document.querySelector('.game-money');
+const $gameBet = document.querySelector('.game-bet');
 // money variables
 let money = 1000;
 let bet = 0;
@@ -39,4 +42,9 @@ $chipImageWrapper.forEach(function (chip) {
 $dealButton.addEventListener('click', function () {
   $startingScreenContainer.classList.add('hidden');
   $header.classList.add('hidden');
+  $gameContainer.classList.remove('hidden');
+
+  // render money and bet amount
+  $gameMoney.textContent = `Money: $${money}`;
+  $gameBet.textContent = `Bet: $${bet}`;
 });

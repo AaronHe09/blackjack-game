@@ -28,14 +28,14 @@ img {
   max-width: 100px;
 }
 
-.column-half {
+.starting-screen-container .column-half {
   margin: 0 0.5rem;
   margin-bottom: 2rem;
 }
 
 /* starting screen money */
 
-p {
+.starting-screen-container p {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
@@ -58,4 +58,21 @@ p {
 
 .hidden {
   display: none;
+}
+
+/* Game screen. Money and bet text styling */
+
+.game-container .row:first-child {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2rem;
+}
+
+.game-money,
+.game-bet {
+  font-weight: bold;
+}
+
+.game-money {
+  margin-right: 1rem;
 }
