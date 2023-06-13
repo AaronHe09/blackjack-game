@@ -15,6 +15,9 @@ let deckId = null;
 // money variables
 let money = 1000;
 let bet = 0;
+// hands
+const playersHand = null;
+const dealersHand = null;
 
 // fetching deck api
 deck.open('GET', 'https://deckofcardsapi.com/api/deck/new/');
@@ -25,12 +28,9 @@ deck.addEventListener('load', function () {
 deck.send();
 
 // drawing from deck
-function drawCards(i) {
+function drawCards(i, whoseHand) {
   cards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${i}`);
   cards.responseType = 'json';
-  cards.addEventListener('load', function () {
-    console.log(cards.response);
-  });
   cards.send();
 }
 
