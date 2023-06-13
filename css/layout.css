@@ -1,10 +1,17 @@
-* {
-  margin: 0;
-  font-family: Inter, sans-serif;
-}
-
 .container {
   width: 100vw;
   height: 100vh;
-  padding: 10rem 0;
+  padding-top: 4rem;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+  .row:nth-child(2) .column-full {
+    display: flex;
+    gap: 2rem;
+  }
 }
