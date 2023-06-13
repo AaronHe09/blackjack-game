@@ -54,12 +54,6 @@ img {
   font-weight: bold;
 }
 
-/* hidden */
-
-.hidden {
-  display: none;
-}
-
 /* Game screen. Money and bet text styling */
 
 .game-container .row:first-child {
@@ -75,4 +69,36 @@ img {
 
 .game-money {
   margin-right: 1rem;
+}
+
+/* hit and stand button styling */
+
+.hit-button,
+.stand-button {
+  color: black;
+  border-radius: 50%;
+  border: none;
+  height: 100px;
+  width: 100px;
+  margin: 0 0.7rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* graph button styling */
+
+.graph-button {
+  color: black;
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding: 0.7rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* hidden */
+
+.hidden {
+  display: none;
 }
