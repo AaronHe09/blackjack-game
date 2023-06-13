@@ -42,7 +42,7 @@ p {
   margin-bottom: 1rem;
 }
 
-/* Bet button */
+/* deal button */
 
 .deal-button {
   color: black;
@@ -52,4 +52,10 @@ p {
   margin-top: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+/* hidden */
+
+.hidden {
+  display: none;
 }
