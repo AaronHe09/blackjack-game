@@ -60,7 +60,7 @@ img {
   display: flex;
   justify-content: flex-end;
   padding-right: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 .game-money,
@@ -96,6 +96,32 @@ img {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+/* dealers and players hand styling */
+
+.game-container .row:nth-child(2),
+.game-container .row:nth-child(3) {
+  flex-direction: column;
+}
+
+.dealers-hand-value,
+.players-hand-value {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.dealers-hand,
+.players-hand {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.dealers-hand img,
+.players-hand img {
+  width: 33%;
 }
 
 /* hidden */
