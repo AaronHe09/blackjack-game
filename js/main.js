@@ -2,6 +2,7 @@ const $chipImageWrapper = document.querySelectorAll('.chip-image-wrapper');
 const $money = document.querySelector('.money');
 const $bet = document.querySelector('.bet');
 const $dealButton = document.querySelector('.deal-button');
+const $hitButton = document.querySelector('.hit-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
 // game elements
@@ -12,9 +13,11 @@ const $playersCard = document.querySelectorAll('.players-card');
 const $dealersCard = document.querySelectorAll('.dealers-card');
 const $dealersHandValue = document.querySelector('.dealers-hand-value');
 const $playersHandValue = document.querySelector('.players-hand-value');
+const $playersHand = document.querySelector('.players-hand');
 // api variable
 const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
+const card = new XMLHttpRequest();
 let deckId = null;
 // money variables
 let money = 1000;
@@ -33,11 +36,46 @@ deck.addEventListener('load', function () {
 });
 deck.send();
 
+// draw one card
+function drawPlayerCard() {
+  card.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
+  card.responseType = 'json';
+  card.addEventListener('load', renderCardAndValue);
+  card.send();
+}
+
+// render card and value
+function renderCardAndValue() {
+  const image = document.createElement('img');
+
+  // renders cards image
+  image.classList.add('players-card');
+  image.src = card.response.cards[0].image;
+  $playersHand.appendChild(image);
+
+  // adds card value
+  const value = cards.response.cards[0].value;
+
+  if (value === 'ACE') {
+    if (playersHandValue + 11 <= 21) {
+      playersHandValue += 11;
+    } else {
+      playersHandValue += 1;
+    }
+  } else if (parseInt(value) > 1 && parseInt(value) < 11) {
+    playersHandValue += parseInt(value);
+  } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
+    playersHandValue += 10;
+  }
+  $playersHandValue.textContent = playersHandValue;
+}
+
 // drawing first 4 cardsfrom deck
 function renderFourCards() {
   cards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`);
   cards.responseType = 'json';
   cards.addEventListener('load', function () {
+
     $playersCard[0].src = cards.response.cards[0].image;
     $playersCard[1].src = cards.response.cards[1].image;
     $dealersCard[1].src = cards.response.cards[3].image;
@@ -55,7 +93,9 @@ function renderFourCards() {
   cards.send();
 }
 
-function calculateHandValue(int, lessthan, hand, callback) {
+// calculate the value of someones hand
+
+function calculateHandValue(int, lessthan, hand, callback, array) {
   const eleven = 11;
   const one = 1;
   const ten = 10;
@@ -84,6 +124,13 @@ function addToPlayersHandValue(value) {
 function addToDealersHandValue(value) {
   dealersHandValue += value;
 }
+
+// eventListener for hit button
+
+$hitButton.addEventListener('click', function () {
+  drawPlayerCard();
+  card.removeEventListener('ended', renderCardAndValue);
+});
 
 // eventLisenter for chip images
 $chipImageWrapper.forEach(function (chip) {
