@@ -56,28 +56,32 @@ function renderFourCards() {
 }
 
 function calculateHandValue(int, lessthan, hand, callback) {
+  const eleven = 11;
+  const one = 1;
+  const ten = 10;
+
   for (let i = int; i < lessthan; i++) {
     const value = cards.response.cards[i].value;
 
     if (value === 'ACE') {
       if (hand + 11 <= 21) {
-        callback(value, 11);
+        callback(eleven);
       } else {
-        callback(value, 1);
+        callback(one);
       }
     } else if (parseInt(value) > 1 && parseInt(value) < 11) {
       callback(parseInt(value));
     } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
-      callback(value, 10);
+      callback(ten);
     }
   }
 }
 
-function addToPlayersHandValue(nul, value) {
+function addToPlayersHandValue(value) {
   playersHandValue += value;
 }
 
-function addToDealersHandValue(nul, value) {
+function addToDealersHandValue(value) {
   dealersHandValue += value;
 }
 
