@@ -4,12 +4,14 @@ const $bet = document.querySelector('.bet');
 const $dealButton = document.querySelector('.deal-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
-const $playersCard = document.querySelectorAll('.players-card');
-const $dealersCard = document.querySelectorAll('.dealers-card');
 // game elements
 const $gameContainer = document.querySelector('.game-container');
 const $gameMoney = document.querySelector('.game-money');
 const $gameBet = document.querySelector('.game-bet');
+const $playersCard = document.querySelectorAll('.players-card');
+const $dealersCard = document.querySelectorAll('.dealers-card');
+const $dealersHandValue = document.querySelector('.dealers-hand-value');
+const $playersHandValue = document.querySelector('.players-hand-value');
 // api variable
 const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
@@ -17,7 +19,10 @@ let deckId = null;
 // money variables
 let money = 1000;
 let bet = 0;
-//
+// players hand values
+let playersHandValue = 0;
+let dealersHandValue = 0;
+// dealers hand
 const dealersHand = [];
 
 // fetching deck api
@@ -37,10 +42,43 @@ function renderFourCards() {
     $playersCard[1].src = cards.response.cards[1].image;
     $dealersCard[1].src = cards.response.cards[3].image;
     dealersHand.push(cards.response.cards[2]);
+    dealersHand.push(cards.response.cards[3]);
 
-    // calculate total value of cards
+    // calculate total value of cards for player
+    calculateHandValue(0, 2, playersHandValue, addToPlayersHandValue);
+    $playersHandValue.textContent = playersHandValue;
+
+    // calculate value of the second card for dealer
+    calculateHandValue(3, 4, dealersHandValue, addToDealersHandValue);
+    $dealersHandValue.textContent = dealersHandValue;
   });
   cards.send();
+}
+
+function calculateHandValue(int, lessthan, hand, callback) {
+  for (let i = int; i < lessthan; i++) {
+    const value = cards.response.cards[i].value;
+
+    if (value === 'ACE') {
+      if (hand + 11 <= 21) {
+        callback(value, 11);
+      } else {
+        callback(value, 1);
+      }
+    } else if (parseInt(value) > 1 && parseInt(value) < 11) {
+      callback(parseInt(value));
+    } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
+      callback(value, 10);
+    }
+  }
+}
+
+function addToPlayersHandValue(nul, value) {
+  playersHandValue += value;
+}
+
+function addToDealersHandValue(nul, value) {
+  dealersHandValue += value;
 }
 
 // eventLisenter for chip images
