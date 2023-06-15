@@ -28,21 +28,21 @@ img {
   max-width: 100px;
 }
 
-.column-half {
+.starting-screen-container .column-half {
   margin: 0 0.5rem;
   margin-bottom: 2rem;
 }
 
 /* starting screen money */
 
-p {
+.starting-screen-container p {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
 }
 
-/* Bet button */
+/* deal button */
 
 .deal-button {
   color: black;
@@ -52,4 +52,79 @@ p {
   margin-top: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+/* Game screen. Money and bet text styling */
+
+.money-bet-values {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2rem;
+  margin-bottom: 3rem;
+}
+
+.game-money,
+.game-bet {
+  font-weight: bold;
+}
+
+.game-money {
+  margin-right: 1rem;
+}
+
+/* hit and stand button styling */
+
+.hit-button,
+.stand-button {
+  color: black;
+  border-radius: 50%;
+  border: none;
+  height: 100px;
+  width: 100px;
+  margin: 0 0.7rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* graph button styling */
+
+.graph-button {
+  color: black;
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding: 0.7rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* dealers and players hand styling */
+
+.row.hand {
+  flex-direction: column;
+}
+
+.dealers-hand-value,
+.players-hand-value {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.dealers-hand,
+.players-hand {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.dealers-hand img,
+.players-hand img {
+  width: 33%;
+}
+
+/* hidden */
+
+.hidden {
+  display: none;
 }

@@ -1,7 +1,7 @@
 .container {
   width: 100vw;
   height: 100vh;
-  padding-top: 4rem;
+  padding-top: 3rem;
 }
 
 .row {
@@ -13,5 +13,17 @@
   .row:nth-child(2) .column-full {
     display: flex;
     gap: 2rem;
+  }
+
+  .dealers-hand img,
+  .players-hand img {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .row-md {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
   }
 }
