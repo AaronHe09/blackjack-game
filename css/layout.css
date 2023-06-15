@@ -14,4 +14,16 @@
     display: flex;
     gap: 2rem;
   }
+
+  .dealers-hand img,
+  .players-hand img {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .row-md {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+  }
 }

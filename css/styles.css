@@ -56,7 +56,7 @@ img {
 
 /* Game screen. Money and bet text styling */
 
-.game-container .row:first-child {
+.money-bet-values {
   display: flex;
   justify-content: flex-end;
   padding-right: 2rem;
@@ -100,8 +100,7 @@ img {
 
 /* dealers and players hand styling */
 
-.game-container .row:nth-child(2),
-.game-container .row:nth-child(3) {
+.row.hand {
   flex-direction: column;
 }
 
