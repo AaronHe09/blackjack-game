@@ -159,6 +159,10 @@ $standButton.addEventListener('click', function () {
   }
 
   $dealersHandValue.textContent = dealersHandValue;
+
+  // disables the hit button
+  $hitButton.disabled = true;
+  $standButton.disabled = true;
 });
 
 // eventLisenter for chip images
