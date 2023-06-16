@@ -127,7 +127,7 @@ function addToDealersHandValue(value) {
 // eventListener for hit button
 
 $hitButton.addEventListener('click', function () {
-  if (playersHandValue <= 21) {
+  if (playersHandValue < 21) {
     drawPlayerCard();
     card.removeEventListener('ended', renderCardAndValue);
   }
