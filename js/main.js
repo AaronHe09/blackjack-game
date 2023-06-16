@@ -141,7 +141,24 @@ $hitButton.addEventListener('click', function () {
 // eventListner for stand button
 
 $standButton.addEventListener('click', function () {
+// reveal dealers first card
+  $dealersCard[0].src = dealersHand[0].image;
 
+  // add value of card to total value
+  const value = dealersHand[0].value;
+  if (value === 'ACE') {
+    if (playersHandValue + 11 <= 21) {
+      dealersHandValue += 11;
+    } else {
+      dealersHandValue += 1;
+    }
+  } else if (parseInt(value) > 1 && parseInt(value) < 11) {
+    dealersHandValue += parseInt(value);
+  } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
+    dealersHandValue += 10;
+  }
+
+  $dealersHandValue.textContent = dealersHandValue;
 });
 
 // eventLisenter for chip images
