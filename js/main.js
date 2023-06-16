@@ -54,8 +54,7 @@ function renderCardAndValue() {
   $playersHand.appendChild(image);
 
   // adds card value
-  const value = cards.response.cards[0].value;
-
+  const value = card.response.cards[0].value;
   if (value === 'ACE') {
     if (playersHandValue + 11 <= 21) {
       playersHandValue += 11;
@@ -128,8 +127,10 @@ function addToDealersHandValue(value) {
 // eventListener for hit button
 
 $hitButton.addEventListener('click', function () {
-  drawPlayerCard();
-  card.removeEventListener('ended', renderCardAndValue);
+  if (playersHandValue <= 21) {
+    drawPlayerCard();
+    card.removeEventListener('ended', renderCardAndValue);
+  }
 });
 
 // eventLisenter for chip images
