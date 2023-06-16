@@ -51,6 +51,7 @@ function renderCardAndValue() {
   // renders cards image
   image.classList.add('players-card');
   image.src = card.response.cards[0].image;
+  image.alt = card.response.cards[0].value;
   $playersHand.appendChild(image);
 
   // adds card value
@@ -78,6 +79,9 @@ function renderFourCards() {
     $playersCard[0].src = cards.response.cards[0].image;
     $playersCard[1].src = cards.response.cards[1].image;
     $dealersCard[1].src = cards.response.cards[3].image;
+    $playersCard[0].alt = cards.response.cards[0].value;
+    $playersCard[1].alt = cards.response.cards[1].value;
+    $dealersCard[1].alt = cards.response.cards[3].value;
     dealersHand.push(cards.response.cards[2]);
     dealersHand.push(cards.response.cards[3]);
 
