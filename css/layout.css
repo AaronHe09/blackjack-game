@@ -21,6 +21,10 @@
     max-width: 200px;
   }
 
+  .row.hand {
+    margin: 0 1rem;
+  }
+
   .row-md {
     display: flex;
     flex-direction: row-reverse;

@@ -120,7 +120,9 @@ img {
 
 .dealers-hand img,
 .players-hand img {
-  width: 33%;
+  flex: 1;
+  min-width: 0;
+  max-width: 120px;
 }
 
 /* hidden */
