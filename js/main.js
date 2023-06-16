@@ -3,6 +3,7 @@ const $money = document.querySelector('.money');
 const $bet = document.querySelector('.bet');
 const $dealButton = document.querySelector('.deal-button');
 const $hitButton = document.querySelector('.hit-button');
+const $standButton = document.querySelector('.stand-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
 // game elements
@@ -135,6 +136,12 @@ $hitButton.addEventListener('click', function () {
     drawPlayerCard();
     card.removeEventListener('ended', renderCardAndValue);
   }
+});
+
+// eventListner for stand button
+
+$standButton.addEventListener('click', function () {
+
 });
 
 // eventLisenter for chip images
