@@ -214,9 +214,7 @@ $standButton.addEventListener('click', function () {
   $standButton.disabled = true;
 
   // decides if dealer draws or not
-  if (playersHandValue > 21) {
-    $results.textContent = 'You Lose';
-  } else if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
+  if ((playersHandValue > 21) || (dealersHandValue > playersHandValue && dealersHandValue <= 21)) {
     $results.textContent = 'You Lose';
   } else if ((dealersHandValue === 21 && playersHandValue === 21) || (dealersHandValue === 20 && playersHandValue === 20) || (dealersHandValue === 19 && playersHandValue === 19)) {
     $results.textContent = 'Push';
@@ -227,6 +225,7 @@ $standButton.addEventListener('click', function () {
   setTimeout(function () {
     $resultsOverlay.classList.remove('hidden');
   }, 1500);
+
 });
 
 // eventLisenter for chip images
