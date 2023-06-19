@@ -3,8 +3,11 @@ const $money = document.querySelector('.money');
 const $bet = document.querySelector('.bet');
 const $dealButton = document.querySelector('.deal-button');
 const $hitButton = document.querySelector('.hit-button');
+const $standButton = document.querySelector('.stand-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
+const $results = document.querySelector('.results');
+const $resultsOverlay = document.querySelector('.results-overlay');
 // game elements
 const $gameContainer = document.querySelector('.game-container');
 const $gameMoney = document.querySelector('.game-money');
@@ -14,10 +17,12 @@ const $dealersCard = document.querySelectorAll('.dealers-card');
 const $dealersHandValue = document.querySelector('.dealers-hand-value');
 const $playersHandValue = document.querySelector('.players-hand-value');
 const $playersHand = document.querySelector('.players-hand');
+const $dealersHand = document.querySelector('.dealers-hand');
 // api variable
 const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
 const card = new XMLHttpRequest();
+const dealerCards = new XMLHttpRequest();
 let deckId = null;
 // money variables
 let money = 1000;
@@ -36,12 +41,57 @@ deck.addEventListener('load', function () {
 });
 deck.send();
 
-// draw one card
+// draw one card for player
 function drawPlayerCard() {
   card.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
   card.responseType = 'json';
   card.addEventListener('load', renderCardAndValue);
   card.send();
+}
+
+// draw cards for dealer
+function drawDealerCard() {
+  dealerCards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=10`);
+  dealerCards.responseType = 'json';
+  dealerCards.addEventListener('load', function () {
+    for (let i = 0; i < dealerCards.response.cards.length; i++) {
+      const image = document.createElement('img');
+      const value = dealerCards.response.cards[i].value;
+
+      if (dealersHandValue <= playersHandValue) {
+        image.src = dealerCards.response.cards[i].image;
+        image.alt = dealerCards.response.cards[i].value;
+        $dealersHand.prepend(image);
+
+        if (value === 'ACE') {
+          if (dealersHandValue + 11 <= 21) {
+            dealersHandValue += 11;
+          } else {
+            dealersHandValue += 1;
+          }
+        } else if (parseInt(value) > 1 && parseInt(value) < 11) {
+          dealersHandValue += parseInt(value);
+        } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
+          dealersHandValue += 10;
+        }
+
+        $dealersHandValue.textContent = dealersHandValue;
+
+        // shows results
+        if ((dealersHandValue === 19 && playersHandValue === 19) || (dealersHandValue === 20 && playersHandValue === 20) || (dealersHandValue === 21 && playersHandValue === 21)) {
+          $results.textContent = 'Push';
+          break;
+        } else if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
+          $results.textContent = 'You Lose';
+          break;
+        } else if (dealersHandValue > playersHandValue && dealersHandValue > 21) {
+          $results.textContent = 'You Win';
+          break;
+        }
+      }
+    }
+  });
+  dealerCards.send();
 }
 
 // render card and value
@@ -98,7 +148,7 @@ function renderFourCards() {
 
 // calculate the value of someones hand
 
-function calculateHandValue(int, lessthan, hand, callback, array) {
+function calculateHandValue(int, lessthan, hand, callback) {
   const eleven = 11;
   const one = 1;
   const ten = 10;
@@ -135,6 +185,47 @@ $hitButton.addEventListener('click', function () {
     drawPlayerCard();
     card.removeEventListener('ended', renderCardAndValue);
   }
+});
+
+// eventListner for stand button
+
+$standButton.addEventListener('click', function () {
+// reveal dealers first card
+  $dealersCard[0].src = dealersHand[0].image;
+
+  // add value of card to total value
+  const value = dealersHand[0].value;
+  if (value === 'ACE') {
+    if (playersHandValue + 11 <= 21) {
+      dealersHandValue += 11;
+    } else {
+      dealersHandValue += 1;
+    }
+  } else if (parseInt(value) > 1 && parseInt(value) < 11) {
+    dealersHandValue += parseInt(value);
+  } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
+    dealersHandValue += 10;
+  }
+
+  $dealersHandValue.textContent = dealersHandValue;
+
+  // disables the hit button
+  $hitButton.disabled = true;
+  $standButton.disabled = true;
+
+  // decides if dealer draws or not
+  if ((playersHandValue > 21) || (dealersHandValue > playersHandValue && dealersHandValue <= 21)) {
+    $results.textContent = 'You Lose';
+  } else if ((dealersHandValue === 21 && playersHandValue === 21) || (dealersHandValue === 20 && playersHandValue === 20) || (dealersHandValue === 19 && playersHandValue === 19)) {
+    $results.textContent = 'Push';
+  } else if (dealersHandValue <= playersHandValue && dealersHandValue < 21) {
+    drawDealerCard();
+  }
+
+  setTimeout(function () {
+    $resultsOverlay.classList.remove('hidden');
+  }, 1500);
+
 });
 
 // eventLisenter for chip images
