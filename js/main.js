@@ -58,10 +58,10 @@ function drawDealerCard() {
       const image = document.createElement('img');
       const value = dealerCards.response.cards[i].value;
 
-      if (dealersHandValue < playersHandValue) {
+      if (dealersHandValue <= playersHandValue) {
         image.src = dealerCards.response.cards[i].image;
         image.alt = dealerCards.response.cards[i].value;
-        $dealersHand.appendChild(image);
+        $dealersHand.prepend(image);
 
         if (value === 'ACE') {
           if (dealersHandValue + 11 <= 21) {
@@ -78,11 +78,15 @@ function drawDealerCard() {
         $dealersHandValue.textContent = dealersHandValue;
 
         // shows results
-        if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
+        if ((dealersHandValue === 19 && playersHandValue === 19) || (dealersHandValue === 20 && playersHandValue === 20) || (dealersHandValue === 21 && playersHandValue === 21)) {
+          $results.textContent = 'Push';
+          break;
+        } else if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
           $results.textContent = 'You Lose';
           break;
         } else if (dealersHandValue > playersHandValue && dealersHandValue > 21) {
           $results.textContent = 'You Win';
+          break;
         }
       }
     }
@@ -214,9 +218,9 @@ $standButton.addEventListener('click', function () {
     $results.textContent = 'You Lose';
   } else if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
     $results.textContent = 'You Lose';
-  } else if (dealersHandValue === 21 && playersHandValue === 21) {
-    $results.textContent = 'Tie';
-  } else if (dealersHandValue < playersHandValue && dealersHandValue < 21) {
+  } else if ((dealersHandValue === 21 && playersHandValue === 21) || (dealersHandValue === 20 && playersHandValue === 20) || (dealersHandValue === 19 && playersHandValue === 19)) {
+    $results.textContent = 'Push';
+  } else if (dealersHandValue <= playersHandValue && dealersHandValue < 21) {
     drawDealerCard();
   }
 
