@@ -6,6 +6,8 @@ const $hitButton = document.querySelector('.hit-button');
 const $standButton = document.querySelector('.stand-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
+const $results = document.querySelector('.results');
+const $resultsOverlay = document.querySelector('.results-overlay');
 // game elements
 const $gameContainer = document.querySelector('.game-container');
 const $gameMoney = document.querySelector('.game-money');
@@ -19,6 +21,7 @@ const $playersHand = document.querySelector('.players-hand');
 const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
 const card = new XMLHttpRequest();
+const dealerCards = new XMLHttpRequest();
 let deckId = null;
 // money variables
 let money = 1000;
@@ -37,12 +40,20 @@ deck.addEventListener('load', function () {
 });
 deck.send();
 
-// draw one card
+// draw one card for player
 function drawPlayerCard() {
   card.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
   card.responseType = 'json';
   card.addEventListener('load', renderCardAndValue);
   card.send();
+}
+
+// draw cards for dealer
+function drawDealerCard() {
+  dealerCards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=10`);
+  dealerCards.responseType = 'json';
+
+  dealerCards.send();
 }
 
 // render card and value
@@ -163,6 +174,19 @@ $standButton.addEventListener('click', function () {
   // disables the hit button
   $hitButton.disabled = true;
   $standButton.disabled = true;
+
+  // decides if dealer draws or not
+  if (playersHandValue > 21) {
+    $results.textContent = 'You Lose';
+  } else if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
+    $results.textContent = 'You Lose';
+  } else if (dealersHandValue === 21 && playersHandValue === 21) {
+    $results.textContent = 'Tie';
+  }
+
+  setTimeout(function () {
+    $resultsOverlay.classList.remove('hidden');
+  }, 1500);
 });
 
 // eventLisenter for chip images

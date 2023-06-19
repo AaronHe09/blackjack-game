@@ -125,6 +125,23 @@ img {
   max-width: 120px;
 }
 
+.results-overlay {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.results {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
 /* hidden */
 
 .hidden {
