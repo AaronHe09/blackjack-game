@@ -17,6 +17,7 @@ const $dealersCard = document.querySelectorAll('.dealers-card');
 const $dealersHandValue = document.querySelector('.dealers-hand-value');
 const $playersHandValue = document.querySelector('.players-hand-value');
 const $playersHand = document.querySelector('.players-hand');
+const $dealersHand = document.querySelector('.dealers-hand');
 // api variable
 const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
@@ -52,7 +53,40 @@ function drawPlayerCard() {
 function drawDealerCard() {
   dealerCards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=10`);
   dealerCards.responseType = 'json';
+  dealerCards.addEventListener('load', function () {
+    for (let i = 0; i < dealerCards.response.cards.length; i++) {
+      const image = document.createElement('img');
+      const value = dealerCards.response.cards[i].value;
 
+      if (dealersHandValue < playersHandValue) {
+        image.src = dealerCards.response.cards[i].image;
+        image.alt = dealerCards.response.cards[i].value;
+        $dealersHand.appendChild(image);
+
+        if (value === 'ACE') {
+          if (dealersHandValue + 11 <= 21) {
+            dealersHandValue += 11;
+          } else {
+            dealersHandValue += 1;
+          }
+        } else if (parseInt(value) > 1 && parseInt(value) < 11) {
+          dealersHandValue += parseInt(value);
+        } else if (value === 'JACK' || value === 'QUEEN' || value === 'KING') {
+          dealersHandValue += 10;
+        }
+
+        $dealersHandValue.textContent = dealersHandValue;
+
+        // shows results
+        if (dealersHandValue > playersHandValue && dealersHandValue <= 21) {
+          $results.textContent = 'You Lose';
+          break;
+        } else if (dealersHandValue > playersHandValue && dealersHandValue > 21) {
+          $results.textContent = 'You Win';
+        }
+      }
+    }
+  });
   dealerCards.send();
 }
 
@@ -110,7 +144,7 @@ function renderFourCards() {
 
 // calculate the value of someones hand
 
-function calculateHandValue(int, lessthan, hand, callback, array) {
+function calculateHandValue(int, lessthan, hand, callback) {
   const eleven = 11;
   const one = 1;
   const ten = 10;
@@ -182,6 +216,8 @@ $standButton.addEventListener('click', function () {
     $results.textContent = 'You Lose';
   } else if (dealersHandValue === 21 && playersHandValue === 21) {
     $results.textContent = 'Tie';
+  } else if (dealersHandValue < playersHandValue && dealersHandValue < 21) {
+    drawDealerCard();
   }
 
   setTimeout(function () {
