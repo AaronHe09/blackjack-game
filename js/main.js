@@ -4,10 +4,12 @@ const $bet = document.querySelector('.bet');
 const $dealButton = document.querySelector('.deal-button');
 const $hitButton = document.querySelector('.hit-button');
 const $standButton = document.querySelector('.stand-button');
+const $graphButton = document.querySelector('.graph-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
 const $results = document.querySelector('.results');
 const $resultsOverlay = document.querySelector('.results-overlay');
+const $graphOverlay = document.querySelector('.graph-overlay');
 // game elements
 const $gameContainer = document.querySelector('.game-container');
 const $gameMoney = document.querySelector('.game-money');
@@ -178,6 +180,20 @@ function addToDealersHandValue(value) {
   dealersHandValue += value;
 }
 
+// eventListener for deal button
+$dealButton.addEventListener('click', function () {
+  $startingScreenContainer.classList.add('hidden');
+  $header.classList.add('hidden');
+  $gameContainer.classList.remove('hidden');
+
+  // render money and bet amount
+  $gameMoney.textContent = `Money: $${money}`;
+  $gameBet.textContent = `Bet: $${bet}`;
+
+  // draws 4 cards for each player and assign them
+  renderFourCards();
+});
+
 // eventListener for hit button
 
 $hitButton.addEventListener('click', function () {
@@ -254,16 +270,12 @@ $chipImageWrapper.forEach(function (chip) {
   });
 });
 
-// eventListener for deal button
-$dealButton.addEventListener('click', function () {
-  $startingScreenContainer.classList.add('hidden');
-  $header.classList.add('hidden');
-  $gameContainer.classList.remove('hidden');
+// eventListener for graph button
+$graphButton.addEventListener('click', () => {
+  $graphOverlay.classList.remove('hidden');
+});
 
-  // render money and bet amount
-  $gameMoney.textContent = `Money: $${money}`;
-  $gameBet.textContent = `Bet: $${bet}`;
-
-  // draws 4 cards for each player and assign them
-  renderFourCards();
+// eventListener for graph overlay
+$graphOverlay.addEventListener('click', () => {
+  $graphOverlay.classList.add('hidden');
 });

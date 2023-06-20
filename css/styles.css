@@ -142,6 +142,28 @@ img {
   font-weight: bold;
 }
 
+/* graph overlay styling */
+.graph-overlay {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.graph-overlay div {
+  width: 100%;
+  max-width: 300px;
+}
+
+.graph-container .graph-container div {
+  width: 300px;
+}
+
 /* hidden */
 
 .hidden {
