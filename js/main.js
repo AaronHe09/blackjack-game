@@ -289,7 +289,6 @@ $resultsButton.addEventListener('click', () => {
   } else if ($results.textContent === 'Push') {
     money += bet;
   }
-
   if (money === 0) {
     money = 1000;
   }
