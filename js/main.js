@@ -5,6 +5,7 @@ const $dealButton = document.querySelector('.deal-button');
 const $hitButton = document.querySelector('.hit-button');
 const $standButton = document.querySelector('.stand-button');
 const $graphButton = document.querySelector('.graph-button');
+const $resultsButton = document.querySelector('.results-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
 const $results = document.querySelector('.results');
@@ -278,4 +279,18 @@ $graphButton.addEventListener('click', () => {
 // eventListener for graph overlay
 $graphOverlay.addEventListener('click', () => {
   $graphOverlay.classList.add('hidden');
+});
+
+// eventListner for results button
+$resultsButton.addEventListener('click', () => {
+  // updates money and bet
+  if ($results.textContent === 'You Win') {
+    money += bet * 2;
+  } else if ($results.textContent === 'Push') {
+    money += bet;
+  }
+
+  bet = 0;
+  $money.textContent = `Money: $${money}`;
+  $bet.textContent = 'Bet: $0';
 });
