@@ -290,6 +290,10 @@ $resultsButton.addEventListener('click', () => {
     money += bet;
   }
 
+  if (money === 0) {
+    money = 1000;
+  }
+
   bet = 0;
   $money.textContent = `Money: $${money}`;
   $bet.textContent = 'Bet: $0';
