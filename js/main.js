@@ -309,4 +309,11 @@ $resultsButton.addEventListener('click', () => {
   // shuffle the deck
   shuffleDeck();
 
+  // hide game container and results overlay
+  $gameContainer.classList.add('hidden');
+  $resultsOverlay.classList.add('hidden');
+
+  // show starting screen and header
+  $startingScreenContainer.classList.remove('hidden');
+  $header.classList.remove('hidden');
 });
