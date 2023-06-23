@@ -66,6 +66,7 @@ function drawDealerCard() {
         image.src = dealerCards.response.cards[i].image;
         image.alt = dealerCards.response.cards[i].value;
         $dealersHand.prepend(image);
+        image.classList.add('dealers-card');
 
         if (value === 'ACE') {
           if (dealersHandValue + 11 <= 21) {
@@ -128,26 +129,25 @@ function renderCardAndValue() {
 function renderFourCards() {
   cards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`);
   cards.responseType = 'json';
-  cards.addEventListener('load', function () {
-
-    $playersCard[0].src = cards.response.cards[0].image;
-    $playersCard[1].src = cards.response.cards[1].image;
-    $dealersCard[1].src = cards.response.cards[3].image;
-    $playersCard[0].alt = cards.response.cards[0].value;
-    $playersCard[1].alt = cards.response.cards[1].value;
-    $dealersCard[1].alt = cards.response.cards[3].value;
-    dealersHand.push(cards.response.cards[2]);
-    dealersHand.push(cards.response.cards[3]);
-
-    // calculate total value of cards for player
-    calculateHandValue(0, 2, playersHandValue, addToPlayersHandValue);
-    $playersHandValue.textContent = playersHandValue;
-
-    // calculate value of the second card for dealer
-    calculateHandValue(3, 4, dealersHandValue, addToDealersHandValue);
-    $dealersHandValue.textContent = dealersHandValue;
-  });
+  cards.addEventListener('load', renderFourCardsCallback);
   cards.send();
+}
+
+function renderFourCardsCallback() {
+  $playersCard[0].src = cards.response.cards[0].image;
+  $playersCard[1].src = cards.response.cards[1].image;
+  $dealersCard[1].src = cards.response.cards[3].image;
+  $playersCard[0].alt = cards.response.cards[0].value;
+  $playersCard[1].alt = cards.response.cards[1].value;
+  $dealersCard[1].alt = cards.response.cards[3].value;
+  dealersHand.push(cards.response.cards[2]);
+  dealersHand.push(cards.response.cards[3]);
+  // calculate total value of cards for player
+  calculateHandValue(0, 2, playersHandValue, addToPlayersHandValue);
+  $playersHandValue.textContent = playersHandValue;
+  // calculate value of the second card for dealer
+  calculateHandValue(3, 4, dealersHandValue, addToDealersHandValue);
+  $dealersHandValue.textContent = dealersHandValue;
 }
 
 // calculate the value of someones hand
@@ -202,6 +202,7 @@ $dealButton.addEventListener('click', function () {
 
   // draws 4 cards for each player and assign them
   renderFourCards();
+
 });
 
 // eventListener for hit button
@@ -316,4 +317,31 @@ $resultsButton.addEventListener('click', () => {
   // show starting screen and header
   $startingScreenContainer.classList.remove('hidden');
   $header.classList.remove('hidden');
+
+  // reset hand values to 0
+  dealersHandValue = 0;
+  playersHandValue = 0;
+
+  // flip dealers first card facedown
+  $dealersCard[0].src = 'images/back.png';
+
+  // remove extra cards from dealers and playesr hand
+  const $dealersCards = document.querySelectorAll('.dealers-card');
+  const $playersCards = document.querySelectorAll('.players-card');
+
+  if ($dealersCards.length !== 2) {
+    for (let i = 0; i < $dealersCards.length - 2; i++) {
+      $dealersCards[i].remove();
+    }
+  }
+
+  if ($playersCards.length !== 2) {
+    for (let i = 2; i < $playersCards.length; i++) {
+      $playersCards[i].remove();
+    }
+  }
+
+  // enable hit and stand button
+  $hitButton.disabled = false;
+  $standButton.disabled = false;
 });
