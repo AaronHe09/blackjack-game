@@ -35,7 +35,7 @@ let bet = 0;
 let playersHandValue = 0;
 let dealersHandValue = 0;
 // dealers hand
-const dealersHand = [];
+let dealersHand = [];
 
 // fetching deck api
 deck.open('GET', 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
@@ -344,4 +344,7 @@ $resultsButton.addEventListener('click', () => {
   // enable hit and stand button
   $hitButton.disabled = false;
   $standButton.disabled = false;
+
+  // clear dealersHand array
+  dealersHand = [];
 });
