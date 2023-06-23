@@ -26,6 +26,7 @@ const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
 const card = new XMLHttpRequest();
 const dealerCards = new XMLHttpRequest();
+const shuffle = new XMLHttpRequest();
 let deckId = null;
 // money variables
 let money = 1000;
@@ -181,6 +182,14 @@ function addToDealersHandValue(value) {
   dealersHandValue += value;
 }
 
+// shuffle deck
+function shuffleDeck() {
+  shuffle.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/
+`);
+  shuffle.responseType = 'json';
+  shuffle.send();
+}
+
 // eventListener for deal button
 $dealButton.addEventListener('click', function () {
   $startingScreenContainer.classList.add('hidden');
@@ -296,4 +305,8 @@ $resultsButton.addEventListener('click', () => {
   bet = 0;
   $money.textContent = `Money: $${money}`;
   $bet.textContent = 'Bet: $0';
+
+  // shuffle the deck
+  shuffleDeck();
+
 });
