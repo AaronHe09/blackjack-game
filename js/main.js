@@ -5,6 +5,7 @@ const $dealButton = document.querySelector('.deal-button');
 const $hitButton = document.querySelector('.hit-button');
 const $standButton = document.querySelector('.stand-button');
 const $graphButton = document.querySelector('.graph-button');
+const $resultsButton = document.querySelector('.results-button');
 const $startingScreenContainer = document.querySelector('.starting-screen-container');
 const $header = document.querySelector('header');
 const $results = document.querySelector('.results');
@@ -25,6 +26,7 @@ const deck = new XMLHttpRequest();
 const cards = new XMLHttpRequest();
 const card = new XMLHttpRequest();
 const dealerCards = new XMLHttpRequest();
+const shuffle = new XMLHttpRequest();
 let deckId = null;
 // money variables
 let money = 1000;
@@ -33,7 +35,7 @@ let bet = 0;
 let playersHandValue = 0;
 let dealersHandValue = 0;
 // dealers hand
-const dealersHand = [];
+let dealersHand = [];
 
 // fetching deck api
 deck.open('GET', 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
@@ -64,6 +66,7 @@ function drawDealerCard() {
         image.src = dealerCards.response.cards[i].image;
         image.alt = dealerCards.response.cards[i].value;
         $dealersHand.prepend(image);
+        image.classList.add('dealers-card');
 
         if (value === 'ACE') {
           if (dealersHandValue + 11 <= 21) {
@@ -126,26 +129,25 @@ function renderCardAndValue() {
 function renderFourCards() {
   cards.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`);
   cards.responseType = 'json';
-  cards.addEventListener('load', function () {
-
-    $playersCard[0].src = cards.response.cards[0].image;
-    $playersCard[1].src = cards.response.cards[1].image;
-    $dealersCard[1].src = cards.response.cards[3].image;
-    $playersCard[0].alt = cards.response.cards[0].value;
-    $playersCard[1].alt = cards.response.cards[1].value;
-    $dealersCard[1].alt = cards.response.cards[3].value;
-    dealersHand.push(cards.response.cards[2]);
-    dealersHand.push(cards.response.cards[3]);
-
-    // calculate total value of cards for player
-    calculateHandValue(0, 2, playersHandValue, addToPlayersHandValue);
-    $playersHandValue.textContent = playersHandValue;
-
-    // calculate value of the second card for dealer
-    calculateHandValue(3, 4, dealersHandValue, addToDealersHandValue);
-    $dealersHandValue.textContent = dealersHandValue;
-  });
+  cards.addEventListener('load', renderFourCardsCallback);
   cards.send();
+}
+
+function renderFourCardsCallback() {
+  $playersCard[0].src = cards.response.cards[0].image;
+  $playersCard[1].src = cards.response.cards[1].image;
+  $dealersCard[1].src = cards.response.cards[3].image;
+  $playersCard[0].alt = cards.response.cards[0].value;
+  $playersCard[1].alt = cards.response.cards[1].value;
+  $dealersCard[1].alt = cards.response.cards[3].value;
+  dealersHand.push(cards.response.cards[2]);
+  dealersHand.push(cards.response.cards[3]);
+  // calculate total value of cards for player
+  calculateHandValue(0, 2, playersHandValue, addToPlayersHandValue);
+  $playersHandValue.textContent = playersHandValue;
+  // calculate value of the second card for dealer
+  calculateHandValue(3, 4, dealersHandValue, addToDealersHandValue);
+  $dealersHandValue.textContent = dealersHandValue;
 }
 
 // calculate the value of someones hand
@@ -180,6 +182,14 @@ function addToDealersHandValue(value) {
   dealersHandValue += value;
 }
 
+// shuffle deck
+function shuffleDeck() {
+  shuffle.open('GET', `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/
+`);
+  shuffle.responseType = 'json';
+  shuffle.send();
+}
+
 // eventListener for deal button
 $dealButton.addEventListener('click', function () {
   $startingScreenContainer.classList.add('hidden');
@@ -192,6 +202,7 @@ $dealButton.addEventListener('click', function () {
 
   // draws 4 cards for each player and assign them
   renderFourCards();
+
 });
 
 // eventListener for hit button
@@ -278,4 +289,62 @@ $graphButton.addEventListener('click', () => {
 // eventListener for graph overlay
 $graphOverlay.addEventListener('click', () => {
   $graphOverlay.classList.add('hidden');
+});
+
+// eventListner for results button
+$resultsButton.addEventListener('click', () => {
+  // updates money and bet
+  if ($results.textContent === 'You Win') {
+    money += bet * 2;
+  } else if ($results.textContent === 'Push') {
+    money += bet;
+  }
+  if (money === 0) {
+    money = 1000;
+  }
+
+  bet = 0;
+  $money.textContent = `Money: $${money}`;
+  $bet.textContent = 'Bet: $0';
+
+  // shuffle the deck
+  shuffleDeck();
+
+  // hide game container and results overlay
+  $gameContainer.classList.add('hidden');
+  $resultsOverlay.classList.add('hidden');
+
+  // show starting screen and header
+  $startingScreenContainer.classList.remove('hidden');
+  $header.classList.remove('hidden');
+
+  // reset hand values to 0
+  dealersHandValue = 0;
+  playersHandValue = 0;
+
+  // flip dealers first card facedown
+  $dealersCard[0].src = 'images/back.png';
+
+  // remove extra cards from dealers and playesr hand
+  const $dealersCards = document.querySelectorAll('.dealers-card');
+  const $playersCards = document.querySelectorAll('.players-card');
+
+  if ($dealersCards.length !== 2) {
+    for (let i = 0; i < $dealersCards.length - 2; i++) {
+      $dealersCards[i].remove();
+    }
+  }
+
+  if ($playersCards.length !== 2) {
+    for (let i = 2; i < $playersCards.length; i++) {
+      $playersCards[i].remove();
+    }
+  }
+
+  // enable hit and stand button
+  $hitButton.disabled = false;
+  $standButton.disabled = false;
+
+  // clear dealersHand array
+  dealersHand = [];
 });
